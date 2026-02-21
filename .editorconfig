@@ -1,0 +1,8 @@
+root = true
+
+[*.cs]
+# enum switch expression exhaustiveness
+dotnet_diagnostic.IDE0072.severity = error
+
+# enum switch statement exhaustiveness
+dotnet_diagnostic.IDE0010.severity = error
