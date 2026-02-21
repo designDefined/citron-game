@@ -6,9 +6,14 @@ public class ClickController : MonoBehaviour, IPointerClickHandler
 {
     public event Action OnClick;
     bool persist = false;
+    public bool playSound = true;
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (playSound)
+        {
+            AudioManager.Instance.Play("ui_tap_sound");
+        }
         if (OnClick != null)
         {
             OnClick();
