@@ -5355,8 +5355,8 @@ MonoBehaviour:
   tutorialScenarios: {fileID: 11400000, guid: b98a4f8fa4c2f466bae5d692f61c9575, type: 2}
   readTestScenarios: {fileID: 11400000, guid: af44b502a6b674f27bf7576337983909, type: 2}
   mainScenarios: {fileID: 11400000, guid: 269a079669bb844488acd96b06a321ea, type: 2}
-  bunnyImage: {fileID: 1544323231}
-  bunnySmallImage: {fileID: 95280513}
+  bunnyFrontImage: {fileID: 0}
+  bunnyBackImage: {fileID: 0}
   dialogueText: {fileID: 1278729512}
   dialogueImage: {fileID: 250976131}
   bubbleText: {fileID: 1430835128}

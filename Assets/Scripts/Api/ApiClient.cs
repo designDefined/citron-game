@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 
 public static class ApiClient
 {
+    // private static readonly string baseUrl = "https://hhgnfcsswaeykpxe.tunnel.elice.io";
     private static readonly string baseUrl = "http://localhost:8080";
     private static readonly string authToken = "";
 

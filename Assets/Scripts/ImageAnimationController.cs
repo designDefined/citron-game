@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -5,11 +7,12 @@ using UnityEngine.UI;
 public class ImageAnimationController : MonoBehaviour, IAnimatable
 {
     int frameIndex = 0;
-    public AnimationClip defaultClip;
-    public AnimationClip temporalClip;
-    public Image image;
+    public AnimationClip defaultClip = null!;
+    public AnimationClip? temporalClip;
+    public Image image = null!;
 
-    private Action onComplete;
+    private Action? onComplete;
+    private bool? isPersistent;
 
     void OnEnable()
     {
@@ -33,7 +36,8 @@ public class ImageAnimationController : MonoBehaviour, IAnimatable
                 }
                 else
                 {
-                    ClearTemporalClip();
+                    if (isPersistent != true)
+                        ClearTemporalClip();
                     onComplete?.Invoke();
                     onComplete = null;
                 }
@@ -57,16 +61,22 @@ public class ImageAnimationController : MonoBehaviour, IAnimatable
         frameIndex++;
     }
 
-    public void SetTemporalClip(AnimationClip clip, Action onComplete = null)
+    public void SetTemporalClip(
+        AnimationClip clip,
+        Action? onComplete = null,
+        bool? isPersistent = false
+    )
     {
         temporalClip = clip;
         frameIndex = 0;
         this.onComplete = onComplete;
+        this.isPersistent = isPersistent;
     }
 
     public void ClearTemporalClip()
     {
         temporalClip = null;
         frameIndex = 0;
+        isPersistent = null;
     }
 }

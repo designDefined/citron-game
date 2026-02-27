@@ -20,7 +20,6 @@ public class BackgroundController : MonoBehaviour
 
     public void SetDefault()
     {
-        Debug.Log("SetDefault");
         backgroundImage.sprite = defaultSprite;
         rope.SetActive(false);
     }

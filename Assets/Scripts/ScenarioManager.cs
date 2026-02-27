@@ -1,3 +1,5 @@
+#nullable enable
+
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -6,62 +8,62 @@ using UnityEngine;
 [DefaultExecutionOrder(-1000)]
 public class ScenarioManager : MonoBehaviour
 {
-    public static ScenarioManager Instance { get; private set; }
+    public static ScenarioManager Instance { get; private set; } = null!;
 
     public string playerName = "";
     public string password = "";
 
-    private List<Scenario> scenarios;
+    private List<Scenario> scenarios = new();
     private int currentScenarioIndex = 0;
     private bool toNextScenario = false;
     private int currentDialogueIndex = 0;
     private bool toNextDialogue = false;
-    private Scenario CurrentScenario =>
+    private Scenario? CurrentScenario =>
         currentScenarioIndex < scenarios.Count ? scenarios[currentScenarioIndex] : null;
 
-    private List<BookRecord> friendsToShow = new();
+    private readonly List<BookRecord> friendsToShow = new();
     private int friendsToShowIndex = 0;
     private bool toNextFriend = false;
 
-    public EmotionEnum? lastEmotion = EmotionEnum.Spoiler;
+    public EmotionEnum? lastEmotion = null;
 
     // Scenario List
-    public ScenarioList initialScenarios;
-    public ScenarioList tutorialScenarios;
-    public ScenarioList readTestScenarios;
-    public ScenarioList mainScenarios;
+    public ScenarioList initialScenarios = null!;
+    public ScenarioList tutorialScenarios = null!;
+    public ScenarioList readTestScenarios = null!;
+    public ScenarioList mainScenarios = null!;
 
     // Animation Controllers
-    public ImageAnimationController bunnyImage;
-    public ImageAnimationController bunnySmallImage;
-    public TextAnimationController dialogueText;
-    public ImageAnimationController dialogueImage;
-    public TextAnimationController bubbleText;
-    public ImageAnimationController bubbleImage;
+    public ImageAnimationController bunnyFrontImage = null!;
+    public ImageAnimationController bunnyBackImage = null!;
+    public TextAnimationController dialogueText = null!;
+    public ImageAnimationController dialogueImage = null!;
+    public TextAnimationController bubbleText = null!;
+    public ImageAnimationController bubbleImage = null!;
 
-    public TextAnimationController readingText;
+    public TextAnimationController readingText = null!;
 
     // Animation Clips
-    public AnimationClip bunnyChat;
-    public AnimationClip dialogueTurn;
+    public AnimationClip bunnyChat = null!;
+    public AnimationClip dialogueTurn = null!;
 
     // Click Controllers
-    public ClickController dialogueClick;
-    public ClickController backgroundClick;
+    public ClickController dialogueClick = null!;
+    public ClickController backgroundClick = null!;
 
     // UI Controllers
-    public RegisterController registerController;
-    public BackgroundController backgroundController;
-    public BookRecordController recordBookController;
+    public RegisterController registerController = null!;
+    public BackgroundController backgroundController = null!;
+    public BookRecordController recordBookController = null!;
 
     // Sprites
-    public AnimationClip defaultClip;
-    public AnimationClip happyClip;
-    public AnimationClip sadClip;
-    public AnimationClip angryClip;
-    public AnimationClip tastyClip;
-    public AnimationClip embarrassedClip;
-    public AnimationClip spoilerClip;
+    public AnimationClip defaultClip = null!;
+    public AnimationClip happyClip = null!;
+    public AnimationClip sadClip = null!;
+    public AnimationClip angryClip = null!;
+    public AnimationClip tastyClip = null!;
+    public AnimationClip embarrassedClip = null!;
+    public AnimationClip spoilerClip = null!;
 
     public readonly List<string> randomReadTexts = new()
     {
@@ -95,6 +97,7 @@ public class ScenarioManager : MonoBehaviour
     void Start()
     {
         scenarios = new List<Scenario>();
+        scenarios.AddRange(readTestScenarios.scenarios);
         scenarios.AddRange(initialScenarios.scenarios);
         scenarios.AddRange(tutorialScenarios.scenarios);
         scenarios.AddRange(mainScenarios.scenarios);
@@ -170,10 +173,10 @@ public class ScenarioManager : MonoBehaviour
 
     private void ClearScreen()
     {
-        bunnyImage.ClearTemporalClip();
-        bunnyImage.gameObject.SetActive(false);
-        bunnySmallImage.ClearTemporalClip();
-        bunnySmallImage.gameObject.SetActive(false);
+        bunnyFrontImage.ClearTemporalClip();
+        bunnyFrontImage.gameObject.SetActive(false);
+        bunnyBackImage.ClearTemporalClip();
+        bunnyBackImage.gameObject.SetActive(false);
         dialogueImage.ClearTemporalClip();
         dialogueImage.gameObject.SetActive(false);
         dialogueText.ClearTargetText();
@@ -190,11 +193,11 @@ public class ScenarioManager : MonoBehaviour
 
     private void StartDialogues()
     {
-        if (CurrentScenario is not DialogueScenario dialogueScenario)
+        if (CurrentScenario is not DialogueScenario)
             return;
 
         ClearScreen();
-        bunnyImage.gameObject.SetActive(true);
+        bunnyFrontImage.gameObject.SetActive(true);
         dialogueImage.gameObject.SetActive(true);
         dialogueText.gameObject.SetActive(true);
 
@@ -224,12 +227,12 @@ public class ScenarioManager : MonoBehaviour
                 dialogueTurn,
                 () =>
                 {
-                    bunnyImage.SetTemporalClip(bunnyChat);
+                    bunnyFrontImage.SetTemporalClip(bunnyChat);
                     dialogueText.SetTargetText(
                         dialogueScenario.dialogues[currentDialogueIndex].text,
                         () =>
                         {
-                            bunnyImage.ClearTemporalClip();
+                            bunnyFrontImage.ClearTemporalClip();
                             dialogueClick.SetOnClick(() =>
                             {
                                 toNextDialogue = true;
@@ -241,12 +244,12 @@ public class ScenarioManager : MonoBehaviour
         }
         else
         {
-            bunnyImage.SetTemporalClip(bunnyChat);
+            bunnyFrontImage.SetTemporalClip(bunnyChat);
             dialogueText.SetTargetText(
                 dialogueScenario.dialogues[currentDialogueIndex].text,
                 () =>
                 {
-                    bunnyImage.ClearTemporalClip();
+                    bunnyFrontImage.ClearTemporalClip();
                     dialogueClick.SetOnClick(() =>
                     {
                         toNextDialogue = true;
@@ -259,7 +262,7 @@ public class ScenarioManager : MonoBehaviour
     private void StartRegister()
     {
         ClearScreen();
-        bunnyImage.gameObject.SetActive(true);
+        bunnyFrontImage.gameObject.SetActive(true);
         registerController.Open(() =>
         {
             EndRegister();
@@ -275,7 +278,7 @@ public class ScenarioManager : MonoBehaviour
     private void StartLogin()
     {
         ClearScreen();
-        bunnyImage.gameObject.SetActive(true);
+        bunnyFrontImage.gameObject.SetActive(true);
     }
 
     public void EndLogin(string playerName)
@@ -290,7 +293,7 @@ public class ScenarioManager : MonoBehaviour
             return;
 
         ClearScreen();
-        bunnySmallImage.gameObject.SetActive(true);
+        bunnyBackImage.gameObject.SetActive(true);
         bubbleImage.gameObject.SetActive(true);
         bubbleText.gameObject.SetActive(true);
         dialogueImage.gameObject.SetActive(true);
@@ -299,12 +302,12 @@ public class ScenarioManager : MonoBehaviour
         var randomText = "";
         if (lastEmotion.HasValue)
         {
-            bunnySmallImage.SetTemporalClip(GetEmotionClip(lastEmotion.Value));
+            bunnyBackImage.SetTemporalClip(GetEmotionClip(lastEmotion.Value));
             randomText = GetEmotionText(lastEmotion.Value);
         }
         else
         {
-            bunnySmallImage.SetTemporalClip(defaultClip);
+            bunnyBackImage.SetTemporalClip(defaultClip);
             randomText = GetRandomReadText();
         }
 
@@ -384,7 +387,7 @@ public class ScenarioManager : MonoBehaviour
             return;
 
         ClearScreen();
-        bunnySmallImage.gameObject.SetActive(true);
+        bunnyBackImage.gameObject.SetActive(true);
         recordBookController.Open(() =>
         {
             EndRecordBook();

@@ -86,13 +86,11 @@ public class BookRecordController : MonoBehaviour
     public void OnOngoingButtonClick()
     {
         Record(true).Forget();
-        OnRecordSuccess?.Invoke();
     }
 
     public void OnDoneButtonClick()
     {
         Record(false).Forget();
-        OnRecordSuccess?.Invoke();
     }
 
     public async UniTaskVoid Record(bool isOngoing)
@@ -110,7 +108,7 @@ public class BookRecordController : MonoBehaviour
             new
             {
                 name = ScenarioManager.Instance.playerName,
-                password = ScenarioManager.Instance.password,
+                ScenarioManager.Instance.password,
                 bookName,
                 review,
                 emotion,
