@@ -421,7 +421,7 @@ GameObject:
   - component: {fileID: 95280514}
   - component: {fileID: 95280513}
   m_Layer: 5
-  m_Name: Bunny_Small
+  m_Name: Bunny_Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5115,7 +5115,7 @@ GameObject:
   - component: {fileID: 1544323229}
   - component: {fileID: 1544323231}
   m_Layer: 5
-  m_Name: Bunny
+  m_Name: Bunny_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5355,8 +5355,8 @@ MonoBehaviour:
   tutorialScenarios: {fileID: 11400000, guid: b98a4f8fa4c2f466bae5d692f61c9575, type: 2}
   readTestScenarios: {fileID: 11400000, guid: af44b502a6b674f27bf7576337983909, type: 2}
   mainScenarios: {fileID: 11400000, guid: 269a079669bb844488acd96b06a321ea, type: 2}
-  bunnyFrontImage: {fileID: 0}
-  bunnyBackImage: {fileID: 0}
+  bunnyFrontImage: {fileID: 1544323231}
+  bunnyBackImage: {fileID: 95280513}
   dialogueText: {fileID: 1278729512}
   dialogueImage: {fileID: 250976131}
   bubbleText: {fileID: 1430835128}
